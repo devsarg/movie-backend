@@ -11,7 +11,6 @@ import lombok.*;
 public class GetMovieResponseDto {
 
     private String name;
-    private String resmume;
-
+    private String resume;
 
 }
