@@ -1,23 +1,17 @@
 package com.devsarg.controller;
 
 import com.devsarg.dto.GetMovieResponseDto;
+import com.devsarg.dto.GetMovieBySearchDto;
 import com.devsarg.service.ApiService;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-
-/**
- * Standard:
- * GET: /devargs/movie-app
- * POST: /movie/add-entity
- */
 
 @RestController
 @RequestMapping("/api/v1/movies")
@@ -31,5 +25,23 @@ public class MovieController {
     public GetMovieResponseDto getMovieById(@NonNull @PathVariable(value = "id") String id) {
         return apiService.findById(id);
     }
+    
+    // Get all genres availables.
+    @GetMapping("/genre")
+    public JsonNode getMoviesGenre() {
+    	return apiService.getMoviesGenre();
+    }
+    
+    // Filter movies by genre
+    @GetMapping("/genre/{genre}")
+    public List<GetMovieBySearchDto> getMovieByGenre(@NonNull @PathVariable(value = "genre") String genre) {
+    	return apiService.getMovieByGenre(genre);
+    }
 
+    // Pass a text query to search. This value should be URI encoded.
+    @GetMapping("/search/{text}")
+    public List<GetMovieBySearchDto> searchMovie (@NonNull @PathVariable(value = "text") String queryText) {
+    	return apiService.searchMovieByQueryText(queryText);
+    }
+    
 }
